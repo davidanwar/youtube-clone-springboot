@@ -1,5 +1,6 @@
 package com.abs.youtubeclone.controller;
 
+import com.abs.youtubeclone.dto.CommentDto;
 import com.abs.youtubeclone.dto.VideoDto;
 import com.abs.youtubeclone.dto.VideoUploadResponse;
 import com.abs.youtubeclone.service.VideoService;
@@ -44,5 +45,11 @@ public class VideoController {
     @ResponseStatus(HttpStatus.OK)
     public VideoDto likeVideo(@PathVariable(value = "videoId") String videoId) {
         return videoService.likeVideo(videoId);
+    }
+
+    @PostMapping("{id}/comment")
+    @ResponseStatus(HttpStatus.CREATED)
+    public void addComments(@PathVariable(value = "videoId") String videoId, @RequestBody CommentDto commentDto) {
+        videoService.addComment(commentDto, videoId);
     }
 }

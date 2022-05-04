@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -28,7 +29,7 @@ public class Video {
     private VideoStatus videoStatus;
     private Integer viewCount;
     private String thumbnailUrl;
-    private List<Comment> commentList;
+    private List<Comment> comments = new ArrayList<>();
 
 
     public void incrementLike() {
@@ -45,6 +46,10 @@ public class Video {
 
     public void decrementDislike() {
         disLikes.decrementAndGet();
+    }
+
+    public void addComment(Comment comment) {
+        comments.add(comment);
     }
 
 }

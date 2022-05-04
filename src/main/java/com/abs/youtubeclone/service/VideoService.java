@@ -1,7 +1,9 @@
 package com.abs.youtubeclone.service;
 
+import com.abs.youtubeclone.dto.CommentDto;
 import com.abs.youtubeclone.dto.VideoDto;
 import com.abs.youtubeclone.dto.VideoUploadResponse;
+import com.abs.youtubeclone.mapper.CommentMapper;
 import com.abs.youtubeclone.model.Video;
 import com.abs.youtubeclone.repository.VideoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,9 @@ public class VideoService {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private CommentMapper commentMapper;
 
     public VideoUploadResponse uploadVideo(MultipartFile file) {
         String videoUrl = s3Service.uploadFile(file);
@@ -96,5 +101,12 @@ public class VideoService {
         videoDto.setDisLikeCount(videoSaved.getDisLikes().get());
         return videoDto;
 
+    }
+
+    public void  addComment(CommentDto commentDto, String videoId) {
+        var video = getVideo(videoId);
+        var comment = commentMapper.mapFromDto(commentDto);
+        video.addComment(comment);
+        videoRepository.save(video);
     }
 }
