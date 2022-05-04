@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/videos")
 public class VideoController {
@@ -48,8 +50,14 @@ public class VideoController {
     }
 
     @PostMapping("{id}/comment")
-    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseStatus(HttpStatus.OK)
     public void addComments(@PathVariable(value = "videoId") String videoId, @RequestBody CommentDto commentDto) {
         videoService.addComment(commentDto, videoId);
+    }
+
+    @GetMapping("{id}/comment")
+    @ResponseStatus(HttpStatus.OK)
+    public List<CommentDto> getAllComments(@PathVariable String id) {
+        return videoService.getAllComments(id);
     }
 }

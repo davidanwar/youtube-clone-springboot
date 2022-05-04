@@ -10,6 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Collections;
+import java.util.List;
+
 @Service
 public class VideoService {
 
@@ -108,5 +111,12 @@ public class VideoService {
         var comment = commentMapper.mapFromDto(commentDto);
         video.addComment(comment);
         videoRepository.save(video);
+    }
+
+    public List<CommentDto> getAllComments(String videoId) {
+        return videoRepository.findById(videoId)
+                .stream()
+                .map(video -> commentMapper.mapToDtoList(video.getComments()))
+                .findAny().orElse(Collections.emptyList());
     }
 }
